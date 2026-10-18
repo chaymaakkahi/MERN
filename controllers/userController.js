@@ -61,8 +61,16 @@ const getUserById = async (req, res) => {
         }
 
         res.status(200).json(user);
-    } catch (err) {
-        res.status(500).json({
+   }catch (err) {
+        // Check whether the ID format is invalid
+        if (err.name === 'CastError') {
+            return res.status(400).json({
+                message: 'Identifiant de ressource invalide (format ObjectId attendu)'
+            });
+        }
+
+        // Handle other unexpected errors
+        return res.status(500).json({
             message: err.message
         });
     }
